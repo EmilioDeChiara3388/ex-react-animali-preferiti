@@ -40,3 +40,9 @@ img {
 .lista-animali {
     width: 100%;
 }
+
+.container {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+}

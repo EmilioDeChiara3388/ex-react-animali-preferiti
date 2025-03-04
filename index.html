@@ -10,6 +10,30 @@
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+
+        const { createRoot } = ReactDOM;
+
+        const animalList = document.querySelector(".lista-animali");
+        const root = createRoot(animalList);
+        root.render(<ReactApp />)
+
+        function ReactApp() {
+            const animals = ["Gatto", "Camaleonte", "Orso Polare", "Gnu", "Tricheco"];
+            return (
+                <div class="container">
+                    <details>
+                        <summary>
+                            Animali
+                        </summary>
+                        <ul>
+                            {animals.map((animal, index) => <li key={index}>{animal}</li>)}
+                        </ul>
+                    </details >
+                </div>)
+        }
+    </script>
 </head>
 
 <body>
