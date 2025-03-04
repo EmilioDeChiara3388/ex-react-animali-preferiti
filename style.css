@@ -42,7 +42,18 @@ img {
 }
 
 .container {
-    display: flex;
-    justify-content: center;
-    margin: 2rem 0;
+    text-align: center;
+}
+
+button {
+    margin: 1rem auto;
+}
+
+summary {
+    margin-left: .5rem;
+}
+
+ul {
+    list-style: none;
+    text-align: center;
 }
