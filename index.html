@@ -14,28 +14,74 @@
     <script type="text/babel">
 
         const { useState } = React;
-        const { createRoot } = ReactDOM;
+        const { createPortal } = ReactDOM;
 
-        const animalList = document.querySelector(".lista-animali");
-        const root = createRoot(animalList);
-        root.render(<ReactApp />)
+
 
         function ReactApp() {
-            const [animals, setAnimal] = useState([]);
-            const animalsChoices = ["Cane", "Gatto", "Pappagallo", "Cavallo", "Panda"];
+            const [animals, setAnimals] = useState([]);
+            const [newAnimal, setNewAnimal] = useState("");
+            const [showModal, setShowModal] = useState(false)
+            //const animalsChoices = ["Cane", "Gatto", "Pappagallo", "Cavallo", "Panda"];
 
             function addAnimal() {
-                const randomIndex = Math.floor(Math.random() * animalsChoices.length);
-                const randomAnimal = animalsChoices[randomIndex];
+                setShowModal(true)
+            }
 
-                if (!animals.includes(randomAnimal)) {
-                    setAnimal([...animals, randomAnimal])
-                }
+            function onConfirm() {
+                setAnimals([...animals, newAnimal])
+                setNewAnimal("")
+                setShowModal(false)
+
+                //const randomIndex = Math.floor(Math.random() * animalsChoices.length);
+                //const randomAnimal = animalsChoices[randomIndex];
+
+                /*  if (!animals.includes(randomAnimal)) {
+                     setAnimal([...animals, randomAnimal])
+                 } */
+
+            }
+
+            function onClose() {
+                setShowModal(false)
+            }
+
+            function Modal({
+                title,
+                content,
+                show = true,
+                onClose,
+                onConfirm
+            }) {
+                return show && createPortal(
+                    <div className="modal-container">
+                        <div className="modal">
+                            <h2>{title}</h2>
+                            {content}
+                            <div>
+                                <button onClick={onConfirm}>Conferma</button>
+                                <button onClick={onClose}>Annulla</button>
+                            </div>
+                        </div>
+                    </div>,
+                    document.body
+                )
             }
 
             return (
-                <div class="container">
+                <div className="container">
                     <button onClick={addAnimal}>Aggiungi Animale</button>
+                    <Modal
+                        title="Aggiungi animale"
+                        content={<input
+                            type="text"
+                            value={newAnimal}
+                            onChange={(e) => setNewAnimal(e.target.value)}
+                        />}
+                        onClose={onClose}
+                        onConfirm={onConfirm}
+                        show={showModal}
+                    />
                     <details>
                         <summary>
                             Animali
@@ -46,8 +92,30 @@
                     </details >
                 </div>)
         }
+        const { createRoot } = ReactDOM;
+        const animalList = document.querySelector(".lista-animali");
+        const root = createRoot(animalList);
+        root.render(<ReactApp />)
     </script>
 </head>
+
+<!-- 📌 Milestone 3: Usare una Modale per Aggiungere Animali
+Partendo da questo componente Modal:
+(Codice fornito)
+
+Espandilo affinché:
+
+La vecchia prop content può essere usata per passare un componente qualsiasi.
+Un nuovo div in fondo alla modale contiene il bottone Annulla e un nuovo bottone Conferma.
+Una nuova prop onConfirm si aspetta una funzione per gestire l’azione di conferma.
+Sostituisci l’aggiunta casuale dell’animale con una modale interattiva:
+Cliccando il bottone "Aggiungi Animale," si apre una modale.
+La modale include un input di testo (passato al prop content) per inserire il nome di un animale.
+Conferma: Aggiunge l’animale alla lista e chiude la modale.
+Annulla: Chiude la modale senza modificare la lista.
+
+Obiettivo: L’utente può aggiungere animali specifici utilizzando la modale. -->
+
 
 <body>
     <header>
