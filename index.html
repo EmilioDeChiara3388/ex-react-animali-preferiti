@@ -16,6 +16,29 @@
         const { useState } = React;
         const { createPortal } = ReactDOM;
 
+        function Modal({
+            title,
+            content,
+            show = false,
+            onClose,
+            onConfirm
+        }) {
+            return show && createPortal(
+                <div className="modal-container">
+                    <div className="modal">
+                        <h2>{title}</h2>
+                        {content}
+                        <div>
+                            <button onClick={onConfirm}>Conferma</button>
+                            <button onClick={onClose}>Annulla</button>
+                        </div>
+                    </div>
+                </div>,
+                document.body
+            )
+        }
+
+
         function ReactApp() {
             const [animals, setAnimals] = useState([]);
             const [newAnimal, setNewAnimal] = useState("");
@@ -27,6 +50,7 @@
             }
 
             function onConfirm() {
+                if (!newAnimal) return;
                 setAnimals([...animals, newAnimal])
                 setNewAnimal("")
                 setShowModal(false)
@@ -43,31 +67,20 @@
                 setShowModal(false)
             }
 
-            function Modal({
-                title,
-                content,
-                show = true,
-                onClose,
-                onConfirm
-            }) {
-                return show && createPortal(
-                    <div className="modal-container">
-                        <div className="modal">
-                            <h2>{title}</h2>
-                            {content}
-                            <div>
-                                <button onClick={onConfirm}>Conferma</button>
-                                <button onClick={onClose}>Annulla</button>
-                            </div>
-                        </div>
-                    </div>,
-                    document.body
-                )
-            }
+
 
             return (
                 <div className="container">
                     <button onClick={addAnimal}>Aggiungi Animale</button>
+
+                    <details>
+                        <summary>
+                            Animali
+                        </summary>
+                        <ul>
+                            {animals.map((animal, index) => <li key={index}>{animal}</li>)}
+                        </ul>
+                    </details >
                     <Modal
                         title="Aggiungi animale"
                         content={<input
@@ -79,14 +92,6 @@
                         onConfirm={onConfirm}
                         show={showModal}
                     />
-                    <details>
-                        <summary>
-                            Animali
-                        </summary>
-                        <ul>
-                            {animals.map((animal, index) => <li key={index}>{animal}</li>)}
-                        </ul>
-                    </details >
                 </div>)
         }
         const { createRoot } = ReactDOM;
@@ -95,24 +100,6 @@
         root.render(<ReactApp />)
     </script>
 </head>
-
-<!-- 📌 Milestone 3: Usare una Modale per Aggiungere Animali
-Partendo da questo componente Modal:
-(Codice fornito)
-
-Espandilo affinché:
-
-La vecchia prop content può essere usata per passare un componente qualsiasi.
-Un nuovo div in fondo alla modale contiene il bottone Annulla e un nuovo bottone Conferma.
-Una nuova prop onConfirm si aspetta una funzione per gestire l’azione di conferma.
-Sostituisci l’aggiunta casuale dell’animale con una modale interattiva:
-Cliccando il bottone "Aggiungi Animale," si apre una modale.
-La modale include un input di testo (passato al prop content) per inserire il nome di un animale.
-Conferma: Aggiunge l’animale alla lista e chiude la modale.
-Annulla: Chiude la modale senza modificare la lista.
-
-Obiettivo: L’utente può aggiungere animali specifici utilizzando la modale. -->
-
 
 <body>
     <header>
